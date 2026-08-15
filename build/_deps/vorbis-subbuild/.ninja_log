@@ -1,0 +1,21 @@
+# ninja log v7
+5	329	8078844815776583	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-mkdir	861080ea2fdc2e33
+5	329	8078844815776583	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-mkdir	861080ea2fdc2e33
+330	11496	8078844927487629	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-download	85ed349cde71db4b
+330	11496	8078844927487629	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-download	85ed349cde71db4b
+11497	12118	8078844927721314	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-update	856ef16b0eb81c0
+11497	12118	8078844927721314	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-update	856ef16b0eb81c0
+12120	12376	8078844936268127	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-patch	5ab5528b9dc537b7
+12120	12376	8078844936268127	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-patch	5ab5528b9dc537b7
+12376	12614	8078844938690339	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-configure	c8be4ff8db7398bc
+12376	12614	8078844938690339	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-configure	c8be4ff8db7398bc
+12614	12883	8078844941412823	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-build	c9cb8283666ee23e
+12614	12883	8078844941412823	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-build	c9cb8283666ee23e
+12884	13108	8078844943692217	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-install	fe08e3a90dff4b16
+12884	13108	8078844943692217	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-install	fe08e3a90dff4b16
+13108	13362	8078844945940361	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-test	97a893bcacb4637e
+13108	13362	8078844945940361	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-test	97a893bcacb4637e
+13363	13838	8078844950834555	CMakeFiles/vorbis-populate-complete	fa628aad6bc7f438
+13363	13838	8078844950834555	vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-done	fa628aad6bc7f438
+13363	13838	8078844950834555	E:/projects/physicsobject/build/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate-complete	fa628aad6bc7f438
+13363	13838	8078844950834555	E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-done	fa628aad6bc7f438

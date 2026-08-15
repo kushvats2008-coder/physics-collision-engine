@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"E:/projects/physicsobject/build/_deps/freetype-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

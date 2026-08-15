@@ -1,0 +1,14 @@
+# Target labels
+ vorbis-populate
+# Source files and their labels
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate-complete.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-build.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-configure.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-download.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-install.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-mkdir.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-patch.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-test.rule
+E:/projects/physicsobject/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-update.rule

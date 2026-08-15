@@ -1,0 +1,21 @@
+# ninja log v7
+6	274	8078843791328026	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-mkdir	c660429a1ef86364
+6	274	8078843791328026	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-mkdir	c660429a1ef86364
+275	23978	8078844028411527	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-download	3216e9d4a2b56c6e
+275	23978	8078844028411527	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-download	3216e9d4a2b56c6e
+23978	24654	8078844028571995	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-update	f0001a7755b0328a
+23978	24654	8078844028571995	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-update	f0001a7755b0328a
+24656	24986	8078844038353591	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-patch	10c500f38b62ba8a
+24656	24986	8078844038353591	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-patch	10c500f38b62ba8a
+24986	25199	8078844040558570	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-configure	c3d702dc5ec0e45f
+24986	25199	8078844040558570	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-configure	c3d702dc5ec0e45f
+25199	25430	8078844042965700	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-build	e5eafd7e27ff798c
+25199	25430	8078844042965700	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-build	e5eafd7e27ff798c
+25430	25620	8078844044837566	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-install	ada2e03c0ca04671
+25430	25620	8078844044837566	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-install	ada2e03c0ca04671
+25620	25787	8078844046538263	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-test	b12f7572a4a2f5de
+25620	25787	8078844046538263	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-test	b12f7572a4a2f5de
+25787	26067	8078844049292663	CMakeFiles/freetype-populate-complete	3b62c6d17fa1107c
+25787	26067	8078844049292663	freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-done	3b62c6d17fa1107c
+25787	26067	8078844049292663	E:/projects/physicsobject/build/_deps/freetype-subbuild/CMakeFiles/freetype-populate-complete	3b62c6d17fa1107c
+25787	26067	8078844049292663	E:/projects/physicsobject/build/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-done	3b62c6d17fa1107c

@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"E:/projects/physicsobject/build/_deps/sfml-subbuild/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

@@ -1,0 +1,11 @@
+build/
+_deps/
+
+.vscode/
+.idea/
+
+*.exe
+*.dll
+*.obj
+*.a
+*.lib

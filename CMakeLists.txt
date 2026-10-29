@@ -18,6 +18,7 @@ FetchContent_MakeAvailable(SFML)
 add_executable(PhysicsEngine
     src/main.cpp
     src/PhysicsObject.cpp
+    src/InputHandler.cpp
 
 )
 

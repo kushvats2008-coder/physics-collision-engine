@@ -4,6 +4,7 @@
 class PhysicsObject
 {
 public:
+    static constexpr float defaultRadius = 30.0f;
     float x;
     float y;
     float velocityY;
@@ -16,11 +17,11 @@ public:
     float mass;
     float forceX;
     float forceY;
-    float radius;
     float resitutionX;
     float resitutionY;
     float width;
     float height;
+    float radius = defaultRadius;
     PhysicsObject(float posx, float posy, float velY, float velX, float accX, float accY, float f, float r);
 
     void update(float deltaTime);
@@ -37,7 +38,7 @@ public:
    float inertia;
     float velocityX;
     float velocityY;
-
+    bool isstatic = false;
     float mass;
 
     PhysicsObjectRect(
@@ -46,7 +47,7 @@ public:
         float velY,
         float velX,
         float w,
-        float h,float Q,float W);
+        float h,float Q,float W,bool staticBody = false);
 
          void update(float deltaTime);
 };

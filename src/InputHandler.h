@@ -8,7 +8,8 @@
 enum struct SpawnMode
 {
     Circle,
-    Rectangle
+    Rectangle,
+    staticrect
 };
 
 class InputHandler

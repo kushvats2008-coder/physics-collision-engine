@@ -18,9 +18,11 @@ public:
         {
             for (size_t j = i + 1; j < rectangles.size(); ++j)
             {
+
                 PhysicsObjectRect &a = rectangles[i];
                 PhysicsObjectRect &b = rectangles[j];
-
+                if (a.isstatic && b.isstatic)
+                    continue;
                 const float overlapX =
                     (a.width + b.width) / 2.0f - abs(a.x - b.x);
                 const float overlapY =
@@ -39,14 +41,10 @@ public:
                     if (a.x < b.x)
                     {
                         normalX = 1.0f;
-                        a.x -= correction;
-                        b.x += correction;
                     }
                     else
                     {
                         normalX = -1.0f;
-                        a.x += correction;
-                        b.x -= correction;
                     }
                 }
                 else
@@ -55,14 +53,39 @@ public:
                     if (a.y < b.y)
                     {
                         normalY = 1.0f;
-                        a.y -= correction;
-                        b.y += correction;
                     }
                     else
                     {
                         normalY = -1.0f;
-                        a.y += correction;
-                        b.y -= correction;
+                    }
+                }
+
+                const float correctionA = a.isstatic ? 0.0f : (b.isstatic ? correction * 2.0f : correction);
+                const float correctionB = b.isstatic ? 0.0f : (a.isstatic ? correction * 2.0f : correction);
+                if (overlapX < overlapY)
+                {
+                    if (a.x < b.x)
+                    {
+                        a.x -= correctionA;
+                        b.x += correctionB;
+                    }
+                    else
+                    {
+                        a.x += correctionA;
+                        b.x -= correctionB;
+                    }
+                }
+                else
+                {
+                    if (a.y < b.y)
+                    {
+                        a.y -= correctionA;
+                        b.y += correctionB;
+                    }
+                    else
+                    {
+                        a.y += correctionA;
+                        b.y -= correctionB;
                     }
                 }
 
@@ -77,16 +100,24 @@ public:
                     const float restitution = 0.5f;
                     float impulse =
                         -(1.0f + restitution) * velocityAlongNormal;
-                    impulse /= (1.0f / a.mass) + (1.0f / b.mass);
+                    const float inverseMassA = a.isstatic ? 0.0f : 1.0f / a.mass;
+                    const float inverseMassB = b.isstatic ? 0.0f : 1.0f / b.mass;
+                    impulse /= inverseMassA + inverseMassB;
 
-                    a.velocityX -= (impulse / a.mass) * normalX;
-                    a.velocityY -= (impulse / a.mass) * normalY;
-                    b.velocityX += (impulse / b.mass) * normalX;
-                    b.velocityY += (impulse / b.mass) * normalY;
+                    if (!a.isstatic)
+                    {
+                        a.velocityX -= impulse * inverseMassA * normalX;
+                        a.velocityY -= impulse * inverseMassA * normalY;
+                    }
+                    if (!b.isstatic)
+                    {
+                        b.velocityX += impulse * inverseMassB * normalX;
+                        b.velocityY += impulse * inverseMassB * normalY;
+                    }
                 }
             }
         }
-           for (int i = 0; i < objects.size(); i++)
+        for (int i = 0; i < objects.size(); i++)
         {
 
             for (int j = i + 1; j < objects.size(); j++)
@@ -95,7 +126,7 @@ public:
                 float dy = objects[j].y - objects[i].y;
 
                 float distance = sqrt(dx * dx + dy * dy);
-              if(distance == 0.0f)
+                if (distance == 0.0f)
                 {
                     continue; // Avoid division by zero
                 }
@@ -175,10 +206,18 @@ public:
                 const float overlap = circle.radius - distance;
                 const float totalMass = circle.mass + rect.mass;
 
-                circle.x += normalX * overlap * (rect.mass / totalMass);
-                circle.y += normalY * overlap * (rect.mass / totalMass);
-                rect.x -= normalX * overlap * (circle.mass / totalMass);
-                rect.y -= normalY * overlap * (circle.mass / totalMass);
+                if (rect.isstatic)
+                {
+                    circle.x += normalX * overlap;
+                    circle.y += normalY * overlap;
+                }
+                else
+                {
+                    circle.x += normalX * overlap * (rect.mass / totalMass);
+                    circle.y += normalY * overlap * (rect.mass / totalMass);
+                    rect.x -= normalX * overlap * (circle.mass / totalMass);
+                    rect.y -= normalY * overlap * (circle.mass / totalMass);
+                }
 
                 const float relativeVelocityX =
                     circle.velocityX - rect.velocityX;
@@ -193,20 +232,26 @@ public:
                     const float restitution = 0.6f;
                     float impulse =
                         -(1.0f + restitution) * velocityAlongNormal;
-                    impulse /= (1.0f / circle.mass) + (1.0f / rect.mass);
+                    const float inverseMassCircle = 1.0f / circle.mass;
+                    const float inverseMassRect = rect.isstatic ? 0.0f : 1.0f / rect.mass;
+                    impulse /= inverseMassCircle + inverseMassRect;
 
-                    circle.velocityX += (impulse / circle.mass) * normalX;
-                    circle.velocityY += (impulse / circle.mass) * normalY;
-                    rect.velocityX -= (impulse / rect.mass) * normalX;
-                    rect.velocityY -= (impulse / rect.mass) * normalY;
+                    circle.velocityX += impulse * inverseMassCircle * normalX;
+                    circle.velocityY += impulse * inverseMassCircle * normalY;
 
-                    const float offsetX = closestX - rect.x;
-                    const float offsetY = closestY - rect.y;
-                    const float torque =
-                        (offsetX * (-impulse * normalY) -
-                         offsetY * (-impulse * normalX)) *
-                        (180.0f / 3.14159265f);
-                    rect.angularVelocity += torque / rect.inertia;
+                    if (!rect.isstatic)
+                    {
+                        rect.velocityX -= impulse * inverseMassRect * normalX;
+                        rect.velocityY -= impulse * inverseMassRect * normalY;
+
+                        const float offsetX = closestX - rect.x;
+                        const float offsetY = closestY - rect.y;
+                        const float torque =
+                            (offsetX * (-impulse * normalY) -
+                             offsetY * (-impulse * normalX)) *
+                            (180.0f / 3.14159265f);
+                        rect.angularVelocity += torque / rect.inertia;
+                    }
                 }
             }
         }
@@ -226,33 +271,32 @@ int main()
         sf::VideoMode({800, 600}),
         "My Physics Engine");
 
-    // Create walls
-    float wallThickness = 10.f;
+    float wallThickness = 10.0f;
 
-    sf::RectangleShape topWall(
-        sf::Vector2f(800.f, wallThickness));
+    // --- Helper to add a wall to BOTH vectors with matching physics, visuals, and center origin ---
+    auto addWall = [&](float x, float y, float w, float h)
+    {
+        // 1. Physics wall (isStatic = true)
+        rectangles.emplace_back(x, y, 0.0f, 0.0f, w, h, 0.0f, 0.0f, true);
 
-    sf::RectangleShape bottomWall(
-        sf::Vector2f(800.f, wallThickness));
+        // 2. Visual shape matching exact width and height
+        rectShapes.emplace_back(sf::Vector2f(w, h));
+        rectShapes.back().setOrigin({w / 2.0f, h / 2.0f}); // Center origin
+        rectShapes.back().setPosition({x, y});
+        rectShapes.back().setFillColor(sf::Color::Red); // All walls red
+    };
 
-    sf::RectangleShape leftWall(
-        sf::Vector2f(wallThickness, 600.f));
+    // 1. Top wall: center at (400, 5), width 800, height 10
+    addWall(400.0f, wallThickness / 2.0f, 800.0f, wallThickness);
 
-    sf::RectangleShape rightWall(
-        sf::Vector2f(wallThickness, 600.f));
+    // 2. Bottom wall: center at (400, 595), width 800, height 10
+    addWall(400.0f, 600.0f - wallThickness / 2.0f, 800.0f, wallThickness);
 
-    // Position walls
-    topWall.setPosition({0.f, 0.f});
-    bottomWall.setPosition({0.f, 590.f});
-    leftWall.setPosition({0.f, 0.f});
-    rightWall.setPosition({790.f, 0.f});
+    // 3. Left wall: center at (5, 300), width 10, height 600
+    addWall(wallThickness / 2.0f, 300.0f, wallThickness, 600.0f);
 
-    // Wall colors
-    topWall.setFillColor(sf::Color::Red);
-    bottomWall.setFillColor(sf::Color::Red);
-    leftWall.setFillColor(sf::Color::Red);
-    rightWall.setFillColor(sf::Color::Red);
-
+    // 4. Right wall: center at (795, 300), width 10, height 600
+    addWall(800.0f - wallThickness / 2.0f, 300.0f, wallThickness, 600.0f);
     // Clock
     sf::Clock clock;
 
@@ -278,6 +322,11 @@ int main()
                     balls.clear();
                     rectangles.clear();
                     rectShapes.clear();
+
+                    addWall(400.0f, wallThickness / 2.0f, 800.0f, wallThickness);
+                    addWall(400.0f, 600.0f - wallThickness / 2.0f, 800.0f, wallThickness);
+                    addWall(wallThickness / 2.0f, 300.0f, wallThickness, 600.0f);
+                    addWall(800.0f - wallThickness / 2.0f, 300.0f, wallThickness, 600.0f);
                 }
             }
 
@@ -291,11 +340,11 @@ int main()
         }
 
         // Controls for first ball
-       // Controls for player rectangle (Arrows to move, Q/E to spin)
-if (!rectangles.empty())
-{
-    InputHandler::handleInput(rectangles[0], deltaTime);
-}
+        // Controls for player rectangle (Arrows to move, Q/E to spin)
+        if (!rectangles.empty())
+        {
+            InputHandler::handleInput(rectangles[0], deltaTime);
+        }
 
         // Update physics
         for (auto &object : objects)
@@ -336,12 +385,6 @@ if (!rectangles.empty())
         {
             window.draw(rectShape);
         }
-
-        // Draw walls
-        window.draw(topWall);
-        window.draw(bottomWall);
-        window.draw(leftWall);
-        window.draw(rightWall);
 
         // Display
         window.display();

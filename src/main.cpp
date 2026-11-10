@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include "SaveManager.h"
 #include <algorithm>
 using namespace std;
 
@@ -299,10 +300,18 @@ int main()
     addWall(800.0f - wallThickness / 2.0f, 300.0f, wallThickness, 600.0f);
     // Clock
     sf::Clock clock;
+    constexpr float timeStep = 1.0f / 60.0f;
+    float accumulator = 0.0f;
 
     while (window.isOpen())
     {
-        float deltaTime = clock.restart().asSeconds();
+        float frameTime = clock.restart().asSeconds();
+
+        // Prevent a long pause from causing an unbounded physics update.
+        if (frameTime > 0.2f)
+            frameTime = 0.2f;
+
+        accumulator += frameTime;
 
         // Handle events
         while (const std::optional event = window.pollEvent())
@@ -328,6 +337,17 @@ int main()
                     addWall(wallThickness / 2.0f, 300.0f, wallThickness, 600.0f);
                     addWall(800.0f - wallThickness / 2.0f, 300.0f, wallThickness, 600.0f);
                 }
+                if(keyPressed->code == sf::Keyboard::Key::S)
+                {
+                    SaveManager::saveToFile("save.json", objects, balls, rectangles, rectShapes);
+                }
+                else if(keyPressed->code == sf::Keyboard::Key::L)
+                {
+                    SaveManager::loadFromFile("save.json", objects, balls, rectangles, rectShapes);
+                }
+                {
+                    spawnMode = SpawnMode::Circle;
+                }
             }
 
             InputHandler::handleSpawnInput(
@@ -339,34 +359,52 @@ int main()
                 rectShapes);
         }
 
-        // Controls for first ball
-        // Controls for player rectangle (Arrows to move, Q/E to spin)
-        if (!rectangles.empty())
+        // Run physics only in fixed-size time steps.
+        while (accumulator >= timeStep)
         {
-            InputHandler::handleInput(rectangles[0], deltaTime);
+            // Controls for the first rectangle (Arrows to move, Q/E to spin).
+            if (!rectangles.empty())
+            {
+                InputHandler::handleInput(rectangles[0], timeStep);
+            }
+
+            for (int i = static_cast<int>(objects.size()) - 1; i >= 0; --i)
+            {
+                objects[i].update(timeStep);
+
+                if (objects[i].x < -100.0f || objects[i].x > 900.0f ||
+                    objects[i].y < -100.0f || objects[i].y > 700.0f)
+                {
+                    objects.erase(objects.begin() + i);
+                    balls.erase(balls.begin() + i);
+                }
+            }
+
+            for (int i = static_cast<int>(rectangles.size()) - 1; i >= 0; --i)
+            {
+                rectangles[i].update(timeStep);
+
+                if (!rectangles[i].isstatic &&
+                    (rectangles[i].x < -100.0f || rectangles[i].x > 900.0f ||
+                     rectangles[i].y < -100.0f || rectangles[i].y > 700.0f))
+                {
+                    rectangles.erase(rectangles.begin() + i);
+                    rectShapes.erase(rectShapes.begin() + i);
+                }
+            }
+
+            Collision::resolve(objects, rectangles);
+
+            accumulator -= timeStep;
         }
 
-        // Update physics
-        for (auto &object : objects)
+        // Update visual positions after all fixed physics steps.
+        for (size_t i = 0; i < balls.size(); ++i)
         {
-            object.update(deltaTime);
+            balls[i].setPosition({objects[i].x, objects[i].y});
         }
 
-        for (auto &rectangle : rectangles)
-        {
-            rectangle.update(deltaTime);
-        }
-
-        Collision::resolve(objects, rectangles);
-
-        // Update visual positions
-        for (int i = 0; i < balls.size(); i++)
-        {
-            balls[i].setPosition({objects[i].x,
-                                  objects[i].y});
-        }
-
-        for (int i = 0; i < rectangles.size(); i++)
+        for (size_t i = 0; i < rectangles.size(); ++i)
         {
             rectShapes[i].setPosition({rectangles[i].x, rectangles[i].y});
             rectShapes[i].setRotation(sf::degrees(rectangles[i].angle));
@@ -376,9 +414,9 @@ int main()
         window.clear();
 
         // Draw balls
-        for (int i = 0; i < balls.size(); i++)
+        for (const auto &ball : balls)
         {
-            window.draw(balls[i]);
+            window.draw(ball);
         }
 
         for (auto &rectShape : rectShapes)

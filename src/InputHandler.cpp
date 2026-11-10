@@ -63,56 +63,34 @@ void InputHandler::handleSpawnInput(
             balls.back().setFillColor(sf::Color(
                 rand() % 256, rand() % 256, rand() % 256));
         }
-        // LEFT CLICK in Rectangle Mode -> Spawn Rectangle
-   else if (mousePressed->button == sf::Mouse::Button::Left &&
-         spawnMode == SpawnMode::staticrect &&
-         rectangles.size() < 20)
-{
-    float newWidth = 120.0f;
-    float newHeight = 20.0f;
-
-    // --- 1. OVERLAP CHECK: Can we spawn here? ---
-    bool canSpawn = true;
-
-    for (const auto &rect : rectangles)
-    {
-        // Only check overlap against other STATIC rectangles
-        if (rect.isstatic)
+        // LEFT CLICK in Rectangle Mode -> Spawn dynamic rectangle
+        else if (mousePressed->button == sf::Mouse::Button::Left &&
+                 spawnMode == SpawnMode::Rectangle &&
+                 rectangles.size() < 20)
         {
-            // Calculate distance between centers
-            float dx = std::abs(mouseX - rect.x);
-            float dy = std::abs(mouseY - rect.y);
+            constexpr float newWidth = 60.0f;
+            constexpr float newHeight = 40.0f;
 
-            // If the new box would overlap with an existing static box
-            if (dx < (newWidth + rect.width) / 2.0f &&
-                dy < (newHeight + rect.height) / 2.0f)
-            {
-                canSpawn = false; // Overlap detected! Block spawn!
-                break;
-            }
+            rectangles.emplace_back(
+                mouseX, mouseY, 0, 0, newWidth, newHeight, 0, 0, false);
+            rectShapes.emplace_back(sf::Vector2f(newWidth, newHeight));
+            rectShapes.back().setOrigin({newWidth / 2.0f, newHeight / 2.0f});
+            rectShapes.back().setPosition({mouseX, mouseY});
+            rectShapes.back().setFillColor(sf::Color(
+                rand() % 256, rand() % 256, rand() % 256));
         }
-    }
-
-    // --- 2. ONLY SPAWN IF FREE OF OVERLAPS ---
-    if (canSpawn)
-    {
-        rectangles.emplace_back(mouseX, mouseY, 0, 0, newWidth, newHeight, 0, 0, true);
-
-        rectShapes.emplace_back(sf::Vector2f(newWidth, newHeight));
-        rectShapes.back().setOrigin({newWidth / 2.0f, newHeight / 2.0f});
-        rectShapes.back().setPosition({mouseX, mouseY});
-        rectShapes.back().setFillColor(sf::Color(100, 100, 100)); // Dark Gray wall
-    }
-}
+        // LEFT CLICK in Static Rectangle Mode -> Spawn static rectangle
         else if (mousePressed->button == sf::Mouse::Button::Left &&
                  spawnMode == SpawnMode::staticrect &&
                  rectangles.size() < 20)
         {
-            
+            constexpr float newWidth = 120.0f;
+            constexpr float newHeight = 20.0f;
 
-            rectangles.emplace_back(mouseX, mouseY, 0, 0, 120, 20, 0, 0,true);
-            rectShapes.emplace_back(sf::Vector2f(120.f, 20.f));
-            rectShapes.back().setOrigin({60.f, 10.f});
+            rectangles.emplace_back(
+                mouseX, mouseY, 0, 0, newWidth, newHeight, 0, 0, true);
+            rectShapes.emplace_back(sf::Vector2f(newWidth, newHeight));
+            rectShapes.back().setOrigin({newWidth / 2.0f, newHeight / 2.0f});
             rectShapes.back().setPosition({mouseX, mouseY});
             rectShapes.back().setFillColor(sf::Color(
                 rand() % 256, rand() % 256, rand() % 256));
